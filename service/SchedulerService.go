@@ -33,7 +33,7 @@ func (s *SchedulerService) SendToDownload(page model.Page) {
 
 	msg := &sarama.ProducerMessage{
 		Topic: "download-links",
-		Key:   sarama.StringEncoder(link.ID.String()),
+		Key:   sarama.StringEncoder(link.ID.Hex()),
 		Value: sarama.ByteEncoder(bytes),
 	}
 

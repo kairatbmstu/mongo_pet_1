@@ -1,0 +1,87 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package mongo_pet;
+
+option go_package = "/grpcgen";
+
+service PageService {
+    rpc CreatePage (CreatePageRequest) returns (CreatePageResponse);
+    rpc UpdatePage (UpdatePageRequest) returns (UpdatePageResponse);
+    rpc DeletePage (DeletePageRequest) returns (DeletePageResponse);
+    rpc FindById  (FindByIdRequest) returns (FindByIdResponse);
+}
+
+message Link {
+    string id = 1;
+    string url = 2;
+    string status = 5;
+}
+
+message CreatePageRequest {
+    string id = 1;
+    string url = 2;
+    google.protobuf.Timestamp created = 3;
+    google.protobuf.Timestamp updated = 4;
+    string status = 5;
+    string html = 6;
+    double page_rank = 7;
+    repeated Link link2 = 8;
+}
+
+message CreatePageResponse {
+    string id = 1;
+    string url = 2;
+    google.protobuf.Timestamp created = 3;
+    google.protobuf.Timestamp updated = 4;
+    string status = 5;
+    string html = 6;
+    double page_rank = 7;
+    repeated Link link2 = 8;
+}
+
+message UpdatePageRequest {
+    string id = 1;
+    string url = 2;
+    google.protobuf.Timestamp created = 3;
+    google.protobuf.Timestamp updated = 4;
+    string status = 5;
+    string html = 6;
+    double page_rank = 7;
+    repeated Link link2 = 8;
+}
+
+message UpdatePageResponse {
+    string id = 1;
+    string url = 2;
+    google.protobuf.Timestamp created = 3;
+    google.protobuf.Timestamp updated = 4;
+    string status = 5;
+    string html = 6;
+    double page_rank = 7;
+    repeated Link link2 = 8;
+}
+
+message DeletePageRequest {
+    string id = 1;
+}
+
+message DeletePageResponse {
+    string id = 1;
+}
+
+message FindByIdRequest {
+    string id = 1;
+}
+
+message FindByIdResponse {
+    string id = 1;
+    string url = 2;
+    google.protobuf.Timestamp created = 3;
+    google.protobuf.Timestamp updated = 4;
+    string status = 5;
+    string html = 6;
+    double page_rank = 7;
+    repeated Link link2 = 8;
+}
