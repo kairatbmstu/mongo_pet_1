@@ -27,7 +27,7 @@ message CreatePageRequest {
     string status = 5;
     string html = 6;
     double page_rank = 7;
-    repeated Link link2 = 8;
+    repeated Link links = 8;
 }
 
 message CreatePageResponse {
@@ -38,7 +38,7 @@ message CreatePageResponse {
     string status = 5;
     string html = 6;
     double page_rank = 7;
-    repeated Link link2 = 8;
+    repeated Link links = 8;
 }
 
 message UpdatePageRequest {
@@ -49,7 +49,7 @@ message UpdatePageRequest {
     string status = 5;
     string html = 6;
     double page_rank = 7;
-    repeated Link link2 = 8;
+    repeated Link links = 8;
 }
 
 message UpdatePageResponse {
@@ -60,7 +60,7 @@ message UpdatePageResponse {
     string status = 5;
     string html = 6;
     double page_rank = 7;
-    repeated Link link2 = 8;
+    repeated Link links = 8;
 }
 
 message DeletePageRequest {
@@ -83,5 +83,5 @@ message FindByIdResponse {
     string status = 5;
     string html = 6;
     double page_rank = 7;
-    repeated Link link2 = 8;
+    repeated Link links = 8;
 }
