@@ -7,44 +7,36 @@ import (
 	"mongo_peg_1/repository"
 
 	"github.com/IBM/sarama"
-	"github.com/hashicorp/go-uuid"
 )
 
 type SchedulerService struct {
 	SyncProducer   sarama.SyncProducer
-	PageRepository repository.PageRepository
-	Links          []model.Link
+	PageRepository *repository.PageRepository
+	Pages          []model.Page
 }
 
-func NewSchedulerService() *SchedulerService {
-	var service = SchedulerService{}
-	service.Links = []model.Link{
-		{Url: "", Status: ""},
-		{Url: "", Status: ""},
-		{Url: "", Status: ""},
-		{Url: "", Status: ""},
-		{Url: "", Status: ""},
+func NewSchedulerService(repo *repository.PageRepository, SyncProducer sarama.SyncProducer) *SchedulerService {
+	var service = SchedulerService{
+		PageRepository: repo,
+		SyncProducer:   SyncProducer,
+	}
+	service.Pages = []model.Page{
+		{Url: "https://tengrinews.kz", Status: model.PageInitial},
 	}
 	return &service
 }
 
-func (s *SchedulerService) SendToDownload(Pages []model.Page) {
-	id, _ := uuid.GenerateUUID()
-	message := model.Link{
-		Id:  id,
-		Url: "",
-	}
+func (s *SchedulerService) SendToDownload(page model.Page) {
+	link := model.PageToLink(page)
 
-	// Преобразование сообщения в JSON что бы потом отправить через kafka
-	bytes, _ := json.Marshal(message)
+	bytes, _ := json.Marshal(link)
 
 	msg := &sarama.ProducerMessage{
-		Topic: "ping",
-		Key:   sarama.StringEncoder(id),
+		Topic: "download-links",
+		Key:   sarama.StringEncoder(link.ID.String()),
 		Value: sarama.ByteEncoder(bytes),
 	}
 
-	// отправка сообщения в Kafka
 	_, _, err := s.SyncProducer.SendMessage(msg)
 	if err != nil {
 		log.Printf("Failed to send message to Kafka: %v", err)

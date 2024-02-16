@@ -1,11 +1,17 @@
 package model
 
-import "time"
+import (
+	"time"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
+
+type LinkStatus string
 
 type Link struct {
-	Id     string
-	Url    string
-	Status string
+	ID     primitive.ObjectID `bson:"_id,omitempty"`
+	Url    string             `bson:"url"`
+	Status LinkStatus         `bson:"status"`
 }
 
 const (
@@ -18,14 +24,14 @@ const (
 type PageStatus string
 
 type Page struct {
-	Id       string
-	Url      string
-	Created  time.Time
-	Updated  time.Time
-	Status   PageStatus
-	HTML     string
-	Links    []Link
-	PageRank float64
+	ID       primitive.ObjectID `bson:"_id,omitempty"`
+	Url      string             `bson:"url"`
+	Created  time.Time          `bson:"created"`
+	Updated  time.Time          `bson:"updated"`
+	Status   PageStatus         `bson:"status"`
+	HTML     string             `bson:"html"`
+	Links    []Link             `bson:"links"`
+	PageRank float64            `bson:"pageRank"`
 }
 
 func PageToLink(page Page) Link {
@@ -37,4 +43,19 @@ func PageToLink(page Page) Link {
 func LinkToPage(link Link) Page {
 	var page = Page{}
 	return page
+}
+
+func PagesToLinks(pages []Page) []Link {
+	var links []Link
+
+	for _, page := range pages {
+		var link = Link{
+			ID:     page.ID,
+			Url:    page.Url,
+			Status: "initial",
+		}
+		links = append(links, link)
+	}
+
+	return links
 }
